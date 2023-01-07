@@ -1,10 +1,11 @@
 const EXP_H2 =
   "section > div.pvs-header__container > div > div.pvs-header__left-container--stack > div > h2";
 
-const STINT_S =
-  "div.pvs-list__outer-container > ul li.artdeco-list__item.pvs-list__item--line-separated.pvs-list__item--one-column > div > div.display-flex.flex-column.full-width.align-self-center > div.display-flex.flex-row.justify-space-between > div.display-flex.flex-column.full-width > span.t-14.t-normal.t-black--light > span[aria-hidden=true]";
+const STINTS =
+  "div.pvs-list__outer-container > ul > li.artdeco-list__item.pvs-list__item--line-separated.pvs-list__item--one-column > div > div.display-flex.flex-column.full-width.align-self-center > div.display-flex.flex-row.justify-space-between > div.display-flex.flex-column.full-width > span.t-14.t-normal.t-black--light > span[aria-hidden=true]";
 
-// missing navodit case
+const LONG_STINT =
+  "div.pvs-list__outer-container > ul > li.artdeco-list__item.pvs-list__item--line-separated.pvs-list__item--one-column > div > div.display-flex.flex-column.full-width.align-self-center > div.display-flex.flex-row.justify-space-between > a > span.t-14.t-normal > span[aria-hidden=true]";
 
 const STINT_SEPARATOR = "·";
 
@@ -40,7 +41,7 @@ function init() {
   function myMain() {
     const startNode = document.querySelector(".scaffold-layout__main");
 
-    const elementChecker = setInterval(checkForElement, 500);
+    const elementChecker = setInterval(checkForElement, 5000);
     let counter = 0;
 
     function checkForElement() {
@@ -62,7 +63,6 @@ function init() {
         for (const hElement of findInside) {
           const spanText = hElement.querySelector("span");
           if (spanText !== null) {
-            console.log(spanText, "spanText");
             if (spanText.textContent === "Experience") {
               expElement = hElement;
             }
@@ -72,28 +72,25 @@ function init() {
       console.log(expElement);
       if (expElement) {
         const expParent = findExperienceElement.parentElement;
-        const stints = expParent.querySelectorAll(STINT_S);
+        const stints = expParent.querySelectorAll(STINTS);
+
+        console.log(stints);
+        const longStint = expParent.querySelector(LONG_STINT);
+
         const expArr = [];
+        if (longStint) {
+          const expFromStint = expExtractor(longStint);
+          expFromStint && expArr.push(expFromStint);
+        }
 
-        for (const stint of stints) {
-          const rawStint = stint.textContent;
-          const ex = rawStint.split(STINT_SEPARATOR);
-          const hashExp = {};
-
-          if (ex[1]) {
-            const exp = ex[1];
-            const expSplit = exp.trim().split(" ");
-
-            for (let i = 1; i < expSplit.length; i += 2) {
-              if (expSplit[i] === "yr" || expSplit[i] === "yrs") {
-                hashExp["yr"] = expSplit[i - 1];
-              } else if (expSplit[i] === "mon" || expSplit[i] === "mos") {
-                hashExp["mon"] = expSplit[i - 1];
-              }
-            }
-            expArr.push(hashExp);
+        if (stints.length > 0) {
+          for (const stint of stints) {
+            const expFromStint = expExtractor(stint);
+            expFromStint && expArr.push(expFromStint);
           }
         }
+
+        console.log(expArr);
 
         const totalExp = getTotalExperience(expArr);
 
@@ -116,8 +113,8 @@ function getTotalExperience(expArr) {
   let y = 0;
 
   expArr.forEach((exp) => {
-    const { mon, yr } = exp;
-    m += Number(mon) || 0;
+    const { mo, yr } = exp;
+    m += Number(mo) || 0;
     y += Number(yr) || 0;
   });
 
@@ -127,7 +124,7 @@ function getTotalExperience(expArr) {
     m = m % 12;
   }
 
-  const mSuffix = m < 2 ? "mon" : "mos";
+  const mSuffix = m < 2 ? "mo" : "mos";
   const ySuffix = y < 2 ? "yr" : "yrs";
 
   let totalExpValue = "";
@@ -141,4 +138,35 @@ function getTotalExperience(expArr) {
   }
 
   return totalExpValue.trim();
+}
+
+function expExtractor(stint) {
+  const rawStint = stint.textContent;
+  const ex = rawStint.split(STINT_SEPARATOR);
+
+  if (ex[1]) {
+    return hashExpGenerator(ex[1]);
+  } else {
+    const reg = /^(.*?(\byrs|yr|mo|mos\b)[^$]*)$/;
+    if (reg.test(ex[0])) {
+      return hashExpGenerator(ex[0]);
+    }
+  }
+
+  return null;
+}
+
+function hashExpGenerator(exp) {
+  const hashExp = {};
+  const expSplit = exp.trim().split(" ");
+
+  for (let i = 1; i < expSplit.length; i += 2) {
+    if (expSplit[i] === "yr" || expSplit[i] === "yrs") {
+      hashExp["yr"] = expSplit[i - 1];
+    } else if (expSplit[i] === "mo" || expSplit[i] === "mos") {
+      hashExp["mo"] = expSplit[i - 1];
+    }
+  }
+
+  return hashExp;
 }
