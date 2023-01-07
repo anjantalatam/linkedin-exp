@@ -98,7 +98,6 @@ function init() {
 
         expElement.appendChild(totalExpElement);
       }
-      // Check for experience and iterate for some time
     }
   }
 }
