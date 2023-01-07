@@ -1,0 +1,18 @@
+.bg-green {
+  background-color: green !important;
+}
+
+.bg-pink {
+  background-color: pink !important;
+}
+
+.bg-grey {
+  background-color: grey !important;
+}
+
+.exp-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  gap: 100px;
+}

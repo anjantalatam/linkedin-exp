@@ -1,0 +1,13 @@
+{
+  "manifest_version": 3,
+  "name": "LinkedIn Exp",
+  "version": "1.0",
+  "description": "LinkedIn Experience Aid",
+  "content_scripts": [
+    {
+      "js": ["scripts/content.js"],
+      "css": ["scripts/contentStyles.css"],
+      "matches": ["https://www.linkedin.com/*"]
+    }
+  ]
+}
