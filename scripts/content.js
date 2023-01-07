@@ -143,13 +143,12 @@ function expExtractor(stint) {
   const rawStint = stint.textContent;
   const ex = rawStint.split(STINT_SEPARATOR);
 
-  if (ex[1]) {
+  const matchReg = /^(.*?\s(\byrs|yr|mo|mos\b)[^$]*)$/;
+
+  if (matchReg.test(ex[0])) {
+    return hashExpGenerator(ex[0]);
+  } else if (matchReg.test(ex[1])) {
     return hashExpGenerator(ex[1]);
-  } else {
-    const reg = /^(.*?(\byrs|yr|mo|mos\b)[^$]*)$/;
-    if (reg.test(ex[0])) {
-      return hashExpGenerator(ex[0]);
-    }
   }
 
   return null;
