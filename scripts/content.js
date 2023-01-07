@@ -4,7 +4,7 @@ const EXP_H2 =
 const STINTS =
   "div.pvs-list__outer-container > ul > li.artdeco-list__item.pvs-list__item--line-separated.pvs-list__item--one-column > div > div.display-flex.flex-column.full-width.align-self-center > div.display-flex.flex-row.justify-space-between > div.display-flex.flex-column.full-width > span.t-14.t-normal.t-black--light > span[aria-hidden=true]";
 
-const LONG_STINT =
+const LONG_STINTS =
   "div.pvs-list__outer-container > ul > li.artdeco-list__item.pvs-list__item--line-separated.pvs-list__item--one-column > div > div.display-flex.flex-column.full-width.align-self-center > div.display-flex.flex-row.justify-space-between > a > span.t-14.t-normal > span[aria-hidden=true]";
 
 const STINT_SEPARATOR = "·";
@@ -41,7 +41,7 @@ function init() {
   function myMain() {
     const startNode = document.querySelector(".scaffold-layout__main");
 
-    const elementChecker = setInterval(checkForElement, 5000);
+    const elementChecker = setInterval(checkForElement, 500);
     let counter = 0;
 
     function checkForElement() {
@@ -74,13 +74,14 @@ function init() {
         const expParent = findExperienceElement.parentElement;
         const stints = expParent.querySelectorAll(STINTS);
 
-        console.log(stints);
-        const longStint = expParent.querySelector(LONG_STINT);
+        const longStints = expParent.querySelectorAll(LONG_STINTS);
 
         const expArr = [];
-        if (longStint) {
-          const expFromStint = expExtractor(longStint);
-          expFromStint && expArr.push(expFromStint);
+        if (longStints) {
+          for (const stint of longStints) {
+            const expFromStint = expExtractor(stint);
+            expFromStint && expArr.push(expFromStint);
+          }
         }
 
         if (stints.length > 0) {
@@ -93,8 +94,6 @@ function init() {
         console.log(expArr);
 
         const totalExp = getTotalExperience(expArr);
-
-        console.log(totalExp);
 
         const totalExpElement = document.createElement("span");
         totalExpElement.textContent = totalExp;
