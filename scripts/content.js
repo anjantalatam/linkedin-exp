@@ -31,10 +31,8 @@ init();
 
 function init() {
   const isProfilePage = document.querySelector("#profile-content");
-  console.log({ isProfilePage });
 
   if (isProfilePage) {
-    console.log("run  main");
     myMain();
   }
 
@@ -50,7 +48,7 @@ function init() {
       if (counter > 20) {
         clearInterval(elementChecker);
       }
-      console.log("checking", counter);
+
       let expElement;
 
       const findExperienceElement = document.querySelector("#experience");
@@ -59,7 +57,7 @@ function init() {
         const findInside = startNode.querySelectorAll(EXP_H2);
 
         clearInterval(elementChecker);
-        console.log("finally found", findInside);
+
         for (const hElement of findInside) {
           const spanText = hElement.querySelector("span");
           if (spanText !== null) {
@@ -69,7 +67,7 @@ function init() {
           }
         }
       }
-      console.log(expElement);
+
       if (expElement) {
         const expParent = findExperienceElement.parentElement;
         const stints = expParent.querySelectorAll(STINTS);
@@ -90,8 +88,6 @@ function init() {
             expFromStint && expArr.push(expFromStint);
           }
         }
-
-        console.log(expArr);
 
         const totalExp = getTotalExperience(expArr);
 
