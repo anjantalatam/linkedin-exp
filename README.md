@@ -2,8 +2,9 @@
 
 - A chrome extension to display overall experience of a LinkedIn user next to Experience text on Profile Page
 
-<img width="804" alt="Screenshot 2023-01-09 at 10 09 21 PM" src="https://user-images.githubusercontent.com/53368431/211360687-7dffe1e1-0c2d-4d80-9219-025e8d6b5604.png">
+> LinkedIn Exp is `LIVE` on [Chrome Webstore](https://chrome.google.com/webstore/detail/linkedin-exp/opflogoahoddhbngjkhkplkikbmbblei?hl=en)
 
+<img width="804" alt="Screenshot 2023-01-09 at 10 09 21 PM" src="https://user-images.githubusercontent.com/53368431/211360687-7dffe1e1-0c2d-4d80-9219-025e8d6b5604.png">
 
 ## Problem Statement
 
